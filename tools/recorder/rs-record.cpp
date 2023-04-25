@@ -29,6 +29,10 @@ int main(int argc, char * argv[]) try
 
     rs2::pipeline pipe;
     rs2::config cfg;
+    cfg.enable_stream(RS2_STREAM_COLOR, 640, 480,RS2_FORMAT_BGR8);
+    cfg.enable_stream(RS2_STREAM_DEPTH, 640, 480,RS2_FORMAT_Z16);
+    cfg.enable_stream(RS2_STREAM_ACCEL, RS2_FORMAT_MOTION_XYZ32F);
+    cfg.enable_stream(RS2_STREAM_GYRO, RS2_FORMAT_MOTION_XYZ32F);
     cfg.enable_record_to_file(out_file.getValue());
 
     std::mutex m;
@@ -49,7 +53,7 @@ int main(int argc, char * argv[]) try
 
     auto t = std::chrono::system_clock::now();
     auto t0 = t;
-    while(t - t0 <= std::chrono::seconds(time.getValue())) {
+    while(true) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
         t = std::chrono::system_clock::now();
     }
